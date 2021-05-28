@@ -1,62 +1,82 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Notes API using Json:API Specification
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Notes API te permite realizar un CRUD en tu aplicación Frontend, puedes crear, ver, editar y eliminar notas. La API está desarrollada siguiendo la JSON:API Specification por lo que para realizar solicitudes será necesario complir con las reglas establecidas.
 
-## About Laravel
+¡Prueba la API! Este es el enlace base <https://notes-api.herokuapp.com/api/v1/notes>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Toda request debe de inclir el header `"Content-Type": "application/vnd.api+json"` o de lo contrario será rechazada.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Operaciones disponibles
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* [Fetch notes - GET Request](#fetch-notes-get-request)
+* [Create notes - POST Request](#create-notes-post-request)
+* [Edit notes - GET Request](#edit-notes-get-request)
+* [Update notes - PATCH Request](#update-notes-patch-request)
+* [Delete notes - DELETE Request](#delete-notes-delete-request)
 
-## Learning Laravel
+## Fetch notes - GET Request
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* Obtener todas las notas: `https://notes-api.herokuapp.com/api/v1/notes`
+* Obtener una nota por id: `https://notes-api.herokuapp.com/api/v1/notes/{noteId}`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Create notes - POST Request
 
-## Laravel Sponsors
+Para poder crear recursos es necesario mandar la solicitud con la siguiente estructura JSON.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```javascript
+{
+    "data": {
+        "type": "notes",
+        "attributes": {
+            "title": "Note title",
+            "content": "Note content"
+        }
+    }
+}
+```
 
-### Premium Partners
+Si la solicitud es aprobada y realizada la API devolverá un código de estado HTTP 201 y devolverá un JSON que contiene los datos de la nota creada.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+```javascript
+{
+    "data": {
+        "type" : "notes",
+        "id" : "noteId",
+        "attributes" : [
+            "title" : "Note title",
+            "content" : "Note content",
+            "created_at" : "May 27, 2021 3:49 AM"
+        ],
+        "links" : [
+            "self" : "https://notes-api.herokuapp.com/api/v1/notes/{noteId}"
+        ]
+    }
+}
+```
 
-## Contributing
+## Edit notes - GET Request
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Realiza una petición GET a la url `api/v1/notes/{noteId}/edit` para obtener los datos actuales de la nota y poder mostrarlos para edición.
 
-## Code of Conduct
+## Update notes - PATCH Request
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Realiza una petición PATCH a la url `api/v1/notes/{noteId}` para actualizar los datos de la nota, si la petición es procesada con éxito se devolverá un código de estado HTTP 200 y se devolverá un JSON con los datos actualizados.
 
-## Security Vulnerabilities
+```javascript
+{
+    "data": {
+        "type": "notes",
+        "id": "noteId"
+        "attributes": {
+            "title": "Note title edited",
+            "content": "Note content edited"
+        }
+    }
+}
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Delete notes - DELETE Request
 
-## License
+Realiza una petición DELETE a la url `api/v1/notes/{noteId}` para eliminar la nota con el id propocionado, si la petición es procesada correactamente recibirás un código de estado HTTP 204.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+[API URL]: https://notes-api.herokuapp.com/
