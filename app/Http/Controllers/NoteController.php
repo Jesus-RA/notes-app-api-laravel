@@ -134,8 +134,22 @@ class NoteController extends Controller
      * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function update(NoteRequest $request, Note $note)
+    public function update(NoteRequest $request, $noteId)
     {
+
+        $note = Note::find($noteId);
+        
+        if($note === null)
+            return response()->json([
+                "errors" => [
+                    "status" => "404",
+                    "title" => "Not Found",
+                    "detail" => "Note with id {$noteId} was not found.",
+                    "source" => [
+                        "pointer" => "id"
+                    ]
+                ]
+            ], 404);
 
         $note->update($request->data["attributes"]);
 
