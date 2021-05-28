@@ -39,6 +39,7 @@ class NoteController extends Controller
      */
     public function store(NoteRequest $request)
     {
+        // JSON structure fails
         if($request->validator->fails()){
             return response()->json([
                 "errors" => [
@@ -47,6 +48,34 @@ class NoteController extends Controller
                     "detail" => "Request format, invalid. You must follow JsonAPI Specification to create a resource.",
                     "source" => [
                         "pointer" => "Request format"
+                    ]
+                ]
+            ], 403);
+        }
+
+        // No title provided
+        if(!strlen($request->data["attributes"]["title"])){
+            return response()->json([
+                "errors" => [
+                    "status" => "403",
+                    "title" => "Forbidden",
+                    "detail" => "You must provide a title",
+                    "source" => [
+                        "pointer" => "data/attributes/title"
+                    ]
+                ]
+            ], 403);
+        }
+
+        // No content provided
+        if(!strlen($request->data["attributes"]["content"])){
+            return response()->json([
+                "errors" => [
+                    "status" => "403",
+                    "title" => "Forbidden",
+                    "detail" => "You must provide content",
+                    "source" => [
+                        "pointer" => "data/attributes/content"
                     ]
                 ]
             ], 403);

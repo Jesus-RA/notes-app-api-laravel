@@ -30,7 +30,7 @@ class NoteRequest extends FormRequest
         return [
             "data" => ["required", "array"],
             "data.type" => ["required", "string"],
-            "data.attributes" => ["required", "array"]
+            "data.attributes" => ["required", "array"],
         ];
     }
 

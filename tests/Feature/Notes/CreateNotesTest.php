@@ -48,6 +48,68 @@ class CreateNotesTest extends TestCase
     }
 
     /** @test */
+    public function test_can_not_create_a_note_with_empty_title()
+    {        
+        $note = [
+            "data" => [
+                "type" => "notes",
+                "attributes" => [
+                    "title" => "",
+                    "content" => "Note content",
+                ]
+            ]
+        ];
+
+        $response = $this->postJson( route("api.v1.notes.store"), $note, [
+            "Content-Type" => "application/vnd.api+json"
+        ]);
+
+        $response
+            ->assertStatus(403)
+            ->assertExactJson([
+                "errors" => [
+                    "status" => "403",
+                    "title" => "Forbidden",
+                    "detail" => "You must provide a title",
+                    "source" => [
+                        "pointer" => "data/attributes/title"
+                    ]
+                ]
+            ]);
+    }
+
+    /** @test */
+    public function test_can_not_create_a_note_with_empty_content()
+    {        
+        $note = [
+            "data" => [
+                "type" => "notes",
+                "attributes" => [
+                    "title" => "Note title",
+                    "content" => "",
+                ]
+            ]
+        ];
+
+        $response = $this->postJson( route("api.v1.notes.store"), $note, [
+            "Content-Type" => "application/vnd.api+json"
+        ]);
+
+        $response
+            ->assertStatus(403)
+            ->assertExactJson([
+                "errors" => [
+                    "status" => "403",
+                    "title" => "Forbidden",
+                    "detail" => "You must provide content",
+                    "source" => [
+                        "pointer" => "data/attributes/content"
+                    ]
+                ]
+            ]);
+    }
+
+    /** @test */
     public function test_can_not_create_a_note_whithout_content_type_header()
     {        
         $note = [

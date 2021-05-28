@@ -20,7 +20,7 @@ class NoteResource extends JsonResource
             "attributes" => [
                 "title" => $this->resource->title,
                 "content" => $this->resource->content,
-                "created_at" => $this->resource->created_at
+                "created_at" => $this->resource->created_at->isoFormat('LLL')
             ],
             "links" => [
                 "self" => route( "api.v1.notes.show", $this->resource->getRouteKey() )
