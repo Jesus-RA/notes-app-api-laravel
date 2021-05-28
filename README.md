@@ -45,7 +45,7 @@ Si la solicitud es aprobada y realizada la API devolverá un código de estado H
         "attributes" : [
             "title" : "Note title",
             "content" : "Note content",
-            "created_at" : "May 27, 2021 3:49 AM"
+            "created_at" : "2021-05-28T01:23:12.000000Z"
         ],
         "links" : [
             "self" : "https://notes-api.herokuapp.com/api/v1/notes/{noteId}"
